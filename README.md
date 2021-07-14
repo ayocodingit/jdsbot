@@ -64,3 +64,23 @@ Bot telegram untuk submit groupware dari group evidence telegram
 - [x] tambah peserta dengan mention user telegram (bukan username groupware)
 - [ ] pakai API dedicated utk input user (gak pakai login manual)
 - [x] buat agar nama project jadi tidak case sensitive
+
+## Cara testing
+
+repository ini menggunakan library `unittest` bawaan python. Cara melakukan testing:
+
+- testing seluruh kode: `python -m unittest discover`
+- testing salah satu folder.
+
+    contoh: `python -m unittest discover models/`
+
+- testing 1 script unittest:
+  - beberapa script test telah ditambahkan kode khusus agar bisa di eksekusi langsung sebagai 1 test.
+
+    contoh: `python tests/models/test_groupware.py`
+
+- testing 1 method saja di script unittest: bisa dengan mengisikan import path lengkap ke mathod yang ingin dijalankan.
+
+  contoh: `python -m unittest tests.models.test_groupware.TestGroupware.test_check_date_is_holiday`
+
+Dokumentasi lebih lengkap: https://docs.python.org/3/library/unittest.html

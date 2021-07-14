@@ -2,7 +2,7 @@ import os
 import json
 import unittest
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, date
 
 import models.groupware as groupware
 
@@ -74,6 +74,13 @@ class TestGroupware(unittest.TestCase):
             res = groupware.validate_report(data)
             self.assertTrue(len(res) > 0)
 
+    def test_check_date_is_holiday(self):
+        # check code works normally for default value (today)
+        groupware.check_date_is_holiday(self.auth_token)
+
+        # test for hiliday
+        holiday_date_example = date(2021, 8, 17)
+        self.assertTrue(groupware.check_date_is_holiday(self.auth_token, holiday_date_example))
 
 if __name__ == '__main__':
     unittest.main()
