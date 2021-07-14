@@ -18,7 +18,7 @@ HOLIDAY_LIST_API_URL = ROOT_API_URL+'/holiday-date/'
 PROJECT_LIST_API_URL = ROOT_API_URL+'/project/?limit=200&pageSize=200'
 
 TIMESTAMP_TRAIL_FORMAT = 'T00:00:00.000Z'
-IS_DEBUG=(os.getenv('IS_DEBUG', 'false').lower() == 'true')
+VERBOSITY_LEVEL=int(os.getenv('VERBOSITY_LEVEL', '0'))
 PROJECT_LIST = None
 
 def request_base(method, *args, **argv):
@@ -45,7 +45,7 @@ def get_token(username, password):
     res = req.json()
 
     if req.status_code < 300:
-        if IS_DEBUG:
+        if VERBOSITY_LEVEL > 0:
             print('get token response:', req.text)
         return res['auth_token']
     else:
@@ -207,16 +207,16 @@ def post_report(auth_token, data, files):
         'Authorization': 'Bearer ' + auth_token,
     }
 
-    if IS_DEBUG:
+    if VERBOSITY_LEVEL > 0:
         print('sending input to groupware with data:', data)
 
     req = request_post(url=LOGBOOK_API_URL, headers=headers, files=files, data=data)
-    if IS_DEBUG:
+    if VERBOSITY_LEVEL >= 10:
         print('request body:', req.request.body)
 
     if req.status_code < 300:
         raw_response = req.json()
-        if IS_DEBUG:
+        if VERBOSITY_LEVEL >= 10:
             print('response', raw_response)
         return raw_response
     else:
