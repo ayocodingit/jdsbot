@@ -8,7 +8,7 @@ import models.groupware as groupware
 
 class TestGroupware(unittest.TestCase):
     def setUp(self):
-        os.putenv('IS_DEBUG', 'false')
+        os.putenv('VERBOSITY_LEVEL', '0')
         testuser = os.getenv('TEST_USER')
 
         groupware.LOGBOOK_API_URL = 'https://httpbin.org/anything'

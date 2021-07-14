@@ -19,7 +19,7 @@ import controllers.main as main_controller
 class TestBot(unittest.TestCase):
     @classmethod
     def setUpClass(self):
-        os.putenv('IS_DEBUG', 'false')
+        os.putenv('VERBOSITY_LEVEL', '0')
         self.test_user = os.getenv('TEST_USER')
         self.test_chat_id = os.getenv('TEST_CHAT_ID')
 
