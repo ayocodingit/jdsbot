@@ -14,7 +14,7 @@ PING_API_URL = ROOT_API_URL+'/healthcheck/'
 LOGBOOK_API_URL = ROOT_API_URL+'/logbook/'
 LOGIN_API_URL = ROOT_API_URL+'/auth/login/'
 USER_API_URL = ROOT_API_URL+'/user/'
-HOLIDAY_LIST_API_URL = ROOT_API_URL+'/holiday-date/list'
+HOLIDAY_LIST_API_URL = ROOT_API_URL+'/holiday-date/'
 PROJECT_LIST_API_URL = ROOT_API_URL+'/project/?limit=200&pageSize=200'
 
 TIMESTAMP_TRAIL_FORMAT = 'T00:00:00.000Z'
