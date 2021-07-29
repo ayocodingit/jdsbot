@@ -30,10 +30,11 @@ def get_engine(new=False):
     global ENGINE
 
     if new:
-        return sqlalchemy.create_engine(DATABASE_URL)
+        return sqlalchemy.create_engine(DATABASE_URL, pool_size=30, max_overflow=10, pool_timeout=10, pool_recycle=3600)
 
     if ENGINE is None:
-        ENGINE = sqlalchemy.create_engine(DATABASE_URL)
+        ENGINE = sqlalchemy.create_engine(DATABASE_URL, pool_size=30, max_overflow=10, pool_timeout=10, pool_recycle=3600)
+
     return ENGINE
 
 def get_conn(new=False):
