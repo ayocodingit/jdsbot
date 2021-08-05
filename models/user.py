@@ -49,8 +49,6 @@ def set_alias(username, new_alias):
     global ALIAS
 
     print('set alias for : username', username, 'new_alias', new_alias)
-    if new_alias in ALIAS:
-        return (False, 'Alias already exists')
 
     query_find_user = """
         SELECT username
