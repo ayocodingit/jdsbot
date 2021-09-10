@@ -138,11 +138,15 @@ def get_users_by_birthday(compare_date):
     ALIAS_INV = {v:k for k, v in ALIAS.items()}
     list_birthday = []
 
+    EXCLUDE_USERNAMES = os.getenv('ULANGTAHUN_EXCLUDE_USERNAMES', '').split(';')
+
     for item in groupware.get_users(auth_token, is_active=True, struktural=False):
         birthday = datetime.datetime.strptime(item['birth_date'], '%Y-%m-%d')
         username = item['username']
 
-        if birthday.month == compare_date.month and birthday.day == compare_date.day :
+        if birthday.month == compare_date.month \
+        and birthday.day == compare_date.day \
+        and username not in EXCLUDE_USERNAMES:
             list_birthday.append([
                 item['fullname'],
                 item['divisi'] ,
