@@ -94,7 +94,7 @@ def get_attendance(auth_token, date=None):
     raw_response = req.json()
     return raw_response['results']
 
-def get_users(auth_token, is_active=True, struktural=False, search=None):
+def get_users(auth_token, is_active=True, with_struktural=False, search=None):
     """ get list of all users which match parameters """
     headers = {
         'Authorization': 'Bearer ' + auth_token,
@@ -106,7 +106,6 @@ def get_users(auth_token, is_active=True, struktural=False, search=None):
             'page_size' : 300,
             'page': 1,
             'is_active' : 'true' if is_active else None,
-            'struktural' : 'true' if struktural else None,
             'search' : search,
         },
         headers=headers
@@ -116,7 +115,11 @@ def get_users(auth_token, is_active=True, struktural=False, search=None):
         raise Exception('Error response: ' + req.text)
 
     raw_response = req.json()
-    return raw_response['results']
+    results = raw_response['results'] \
+        if with_struktural else \
+        [ i for i in raw_response['results'] if i['divisi'] != 'ASN' ]
+
+    return results
 
 def check_date_is_holiday(auth_token, date=None):
     """ check the given date is a holiday
