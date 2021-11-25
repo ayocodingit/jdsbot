@@ -50,6 +50,9 @@ def set_alias(username, new_alias):
 
     print('set alias for : username', username, 'new_alias', new_alias)
 
+    if new_alias in ALIAS:
+        return(False, f"Maaf, sudah ada user '{ALIAS[new_alias]}' dengan alias '{new_alias}'. Mohon ubah dahulu alias yang lama agar tidak terjadi bentrok alias, kemudian lakukan reload_data")
+
     query_find_user = """
         SELECT username
         FROM users
