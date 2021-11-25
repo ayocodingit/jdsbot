@@ -1,4 +1,4 @@
-FROM tiangolo/uvicorn-gunicorn-fastapi:python3.7-alpine3.8
+FROM tiangolo/uvicorn-gunicorn-fastapi:python3.8-slim
 
 # copy only requirements.txt as it rarely changed. This is done to utilize
 # docker layer caching, thus avoid calling 'pip install' during every build
@@ -6,12 +6,7 @@ FROM tiangolo/uvicorn-gunicorn-fastapi:python3.7-alpine3.8
 COPY requirements.txt /app/
 WORKDIR /app
 
-# setup timezone according to https://gitlab.alpinelinux.org/alpine/aports/-/issues/5543#note_109075
-RUN apk upgrade --update \
-  && apk add -U tzdata \
-  && cp /usr/share/zoneinfo/Asia/Jakarta /etc/localtime \
-  && apk del tzdata \
-  && pip3 install -r requirements.txt
+RUN pip3 install -r requirements.txt
 
 # copy full working dirs
 COPY . /app
