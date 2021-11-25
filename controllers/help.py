@@ -68,17 +68,25 @@ daftar peserta dipisahkan dengan spasi atau koma
 """
 
 msg['checkin'] = """
-Cara menggunakan command `/checkin`:
+Cara menggunakan command `/checkin` untuk user telegram yang bersangkutan:
 ```
-/checkin <username atau alias> | <lokasi>
+/checkin <lokasi>
+```
+atau jika ingin checkin untuk user lain
+```
+/checkin <peserta> | <lokasi>
 ```
 contoh: `/checkin @fulan | WFH`
 """
 
 msg['checkout'] = """
-Cara menggunakan command `/checkout`:
+Cara menggunakan command `/checkout` untuk user telegram yang bersangkutan:
 ```
-/checkout <username atau alias>
+/checkout
+```
+atau jika ingin checkout untuk user lain
+```
+/checkout <peserta>
 ```
 """
 
