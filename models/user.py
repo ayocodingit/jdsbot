@@ -113,7 +113,7 @@ def get_users_attendance(date=None):
     ]
 
     results= []
-    for item in groupware.get_users(auth_token, is_active=True, struktural=False):
+    for item in groupware.get_users(auth_token, is_active=True, with_struktural=False):
         username = item['username']
         if username in PASSWORD :
             results.append([
@@ -140,7 +140,7 @@ def get_users_by_birthday(compare_date):
 
     EXCLUDE_USERNAMES = os.getenv('ULANGTAHUN_EXCLUDE_USERNAMES', '').split(';')
 
-    for item in groupware.get_users(auth_token, is_active=True, struktural=False):
+    for item in groupware.get_users(auth_token, is_active=True, with_struktural=False):
         birthday = datetime.datetime.strptime(item['birth_date'], '%Y-%m-%d')
         username = item['username']
 
