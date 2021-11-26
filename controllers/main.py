@@ -44,11 +44,10 @@ def action_whatsnew(telegram_item):
     """ action for /whatsnew command """
     # banyak karakter yang perlu di escape agar lolos parsing markdown di telegram. ref: https://core.telegram.org/bots/api#markdownv2-style
     msg = """\#UPDATERILIS
-Per tanggal 27 April 2021, kamu bisa menggunakan command terbaru yaitu
+Per tanggal 26 November 2021, ada beberapa perubahan:
 
-`/ulangtahun`
-
-Untuk mengetahui karyawan JDS yang ulang tahun hari ini\. Command ini pun akan otomatis muncul setiap harinya melalui bantuan bot digiteam\.
+\- Perbaikan command `/setalias`\. Untuk mencegah konflik dari alias yang sama, sekarang akan muncul pesan error jika kamu mencoba mendaftarkan user alias yang sudah ada sebelumnya\.
+\- Untuk command `/checkin` dan `/checkout` sekarang secara default akan menggunakan akun user yang mengirimkan command tersebut, sehingga kamu tidak perlu menyebutkan user kamu sendiri\.
 """
     return bot.reply_message(telegram_item, msg, is_markdown=True)
 

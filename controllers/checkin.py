@@ -23,11 +23,17 @@ def action_checkin(item, peserta=None):
     lines = input_text.split("\n")
     first_params = lines[0]
     first_params = first_params[first_params.find(' ')+1 :] # start from after first ' '
+
+    # default values
+    username = '@' + item['message']['from']['username']
+    location = first_params.upper()
+
+    # custom values
     first_params = first_params.split('|') # split with '|'
 
-    if len(first_params) != 2 :
-        bot.process_error(item, 'Wrong format')
-        return
+    if len(first_params) == 2 :
+        username = first_params[0].strip()
+        location = first_params[1].strip().upper()
 
     current_time = datetime.now(timezone('Asia/Jakarta'))
     current_time_utc = current_time.astimezone(timezone('UTC'))
@@ -35,9 +41,6 @@ def action_checkin(item, peserta=None):
     checkinDateTimeFormat = current_time_utc.strftime('%Y-%m-%dT%H:%M:%I.000Z')
     dateNow   = current_time.strftime('%Y-%m-%d')
     hourMinuteNow = current_time.strftime('%H:%M')
-
-    username = first_params[0].strip()
-    location = first_params[1].strip().upper()
 
     locationAvailable = ['WFH','WFO','PERJADIN']
 
@@ -64,11 +67,11 @@ def action_checkin(item, peserta=None):
         responseMessage = json.loads(req.text)
 
         if req.status_code >= 300:
-            errors = "%s | Checkin Gagal | %s %s " % (username, responseMessage["message"], bot.EMOJI_FAILED)
-            return bot.process_error(item, errors)
+            e = ValueError("%s | Checkin Gagal | %s %s " % (username, responseMessage["message"], bot.EMOJI_FAILED))
+            return bot.process_error(item, e)
         else:
             return bot.reply_message(item, msg)
-    
+
     else:
         msg = "Checkin gagal | Jenis kehadiran anda tidak sesuai"
         return bot.reply_message(item, msg)
