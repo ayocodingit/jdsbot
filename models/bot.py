@@ -216,7 +216,6 @@ def process_error(telegram_item, e):
     if os.getenv('IS_DEBUG') and e.__traceback__ :
         msg += "\n"
         msg += ''.join(traceback.format_exception(type(e), e, e.__traceback__))
-    print('error:', msg)
     return reply_message(telegram_item, 'Error: '+msg, is_direct_reply=True)
 
 def get_webhook_status():
