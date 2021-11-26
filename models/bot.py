@@ -213,7 +213,9 @@ def process_report(telegram_item, input_fields, image_data, peserta=None, save_h
 def process_error(telegram_item, e):
     """ process (and may be notify) error encountered """
     msg = str(e)
-    print('error:', msg)
+    if os.getenv('IS_DEBUG') and e.__traceback__ :
+        msg += "\n"
+        msg += ''.join(traceback.format_exception(type(e), e, e.__traceback__))
     return reply_message(telegram_item, 'Error: '+msg, is_direct_reply=True)
 
 def get_webhook_status():

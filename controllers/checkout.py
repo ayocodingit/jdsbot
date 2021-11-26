@@ -20,14 +20,15 @@ def action_checkout(item):
     elif 'text' in item['message']:
         input_text = item['message']['text']
 
+    # default values
+    username = '@' + item['message']['from']['username']
+
     lines = input_text.split("\n")
     first_params = lines[0]
-    first_params = first_params[first_params.find(' ')+1 :] # start from after first ' '
-    first_params = first_params.split('|') # split with '|'
+    if ' ' in first_params:
+        first_params = first_params[first_params.find(' ')+1 :] # start from after first ' '
 
-    if len(first_params) != 1 :
-        bot.process_error(item, 'Wrong format')
-        return
+        username = first_params.strip()
 
     current_time = datetime.now(timezone('Asia/Jakarta'))
     current_time_utc = current_time.astimezone(timezone('UTC'))
@@ -35,8 +36,6 @@ def action_checkout(item):
     checkoutDateTimeFormat = current_time_utc.strftime('%Y-%m-%dT%H:%M:%I.000Z')
     dateNow   = current_time.strftime('%Y-%m-%d')
     hourMinuteNow = current_time.strftime('%H:%M')
-
-    username = first_params[0].strip()
 
     data = {
         'date': checkoutDateTimeFormat,
@@ -56,7 +55,7 @@ def action_checkout(item):
     responseMessage = json.loads(req.text)
 
     if req.status_code >= 300:
-        errors = "%s | Checkout Gagal | %s %s " % (username, responseMessage["message"], bot.EMOJI_FAILED)
-        return bot.process_error(item, errors)
+        e = ValueError("%s | Checkout Gagal | %s %s " % (username, responseMessage["message"], bot.EMOJI_FAILED))
+        return bot.process_error(item, e)
     else:
         return bot.reply_message(item, msg)

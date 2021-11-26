@@ -48,7 +48,8 @@ def load_user_data():
 def set_alias(username, new_alias):
     global ALIAS
 
-    print('set alias for : username', username, 'new_alias', new_alias)
+    if new_alias in ALIAS:
+        return(False, f"Maaf, sudah ada user '{ALIAS[new_alias]}' dengan alias '{new_alias}'. Mohon ubah dahulu alias yang lama agar tidak terjadi bentrok alias, kemudian lakukan reload_data")
 
     query_find_user = """
         SELECT username
@@ -58,7 +59,6 @@ def set_alias(username, new_alias):
         query_find_user,
         {'username':username},
         once=True).fetchall()
-    print('res_find_user', res_find_user)
     if len(res_find_user) < 1:
         query_update = """
             INSERT INTO users
@@ -113,7 +113,7 @@ def get_users_attendance(date=None):
     ]
 
     results= []
-    for item in groupware.get_users(auth_token, is_active=True, struktural=False):
+    for item in groupware.get_users(auth_token, is_active=True, with_struktural=False):
         username = item['username']
         if username in PASSWORD :
             results.append([
@@ -140,7 +140,7 @@ def get_users_by_birthday(compare_date):
 
     EXCLUDE_USERNAMES = os.getenv('ULANGTAHUN_EXCLUDE_USERNAMES', '').split(';')
 
-    for item in groupware.get_users(auth_token, is_active=True, struktural=False):
+    for item in groupware.get_users(auth_token, is_active=True, with_struktural=False):
         birthday = datetime.datetime.strptime(item['birth_date'], '%Y-%m-%d')
         username = item['username']
 
