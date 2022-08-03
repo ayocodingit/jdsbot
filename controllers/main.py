@@ -24,6 +24,7 @@ from controllers.help import action_help
 
 processed=[]
 START_TIME = time.time()
+LIST_CUTOFF_NUM = os.getenv('LIST_CUTOFF_NUM', 90)
 
 def setup():
     """ iniate bot_controller """
@@ -57,10 +58,20 @@ def action_listproject(telegram_item):
     msg = "List project\-project di aplikasi DigiTeam saat ini:\n"
 
     key_list = sorted(list(groupware.PROJECT_LIST.keys()))
-    for item in key_list:
+
+    for (index, item) in enumerate(key_list):
         msg += "\- `{}`\n".format(groupware.PROJECT_LIST[item]['originalName'])
 
-    return bot.reply_message(telegram_item, msg, is_markdown=True)
+        # kalau isi list terlalu banyak, potong sesuai konstanta LIST_CUTOFF_NUM
+        if ((index+1) % LIST_CUTOFF_NUM == 0):
+            bot.reply_message(telegram_item, msg, is_markdown=True)
+            msg = ''
+
+    # kalau masih ada yang blm ter-send
+    if len(msg) > 0:
+        bot.reply_message(telegram_item, msg, is_markdown=True)
+
+    return True
 
 def action_reload(telegram_item):
     """ action for /reload_data command """
