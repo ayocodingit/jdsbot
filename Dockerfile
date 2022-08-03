@@ -1,4 +1,5 @@
-FROM tiangolo/uvicorn-gunicorn-fastapi:python3.8-slim
+FROM registry.digitalservice.id/proxyjds/library/tiangolo/uvicorn-gunicorn-fastapi:python3.8-slim
+#FROM tiangolo/uvicorn-gunicorn-fastapi:python3.8-slim
 
 # copy only requirements.txt as it rarely changed. This is done to utilize
 # docker layer caching, thus avoid calling 'pip install' during every build
