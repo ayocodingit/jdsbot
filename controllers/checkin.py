@@ -51,6 +51,7 @@ def action_checkin(item, peserta=None):
             'location': location,
             'message': "HADIR",
             'note': "",
+            'mood': "neutral"
         }
 
         getToken = user.get_user_token(username)
