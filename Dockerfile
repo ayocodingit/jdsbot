@@ -1,5 +1,9 @@
-FROM registry.digitalservice.id/proxyjds/library/tiangolo/uvicorn-gunicorn-fastapi:python3.8-slim
-#FROM tiangolo/uvicorn-gunicorn-fastapi:python3.8-slim
+# sumber ini diperlukan untuk menghindari batasan pull docker hub. namun di
+# production jdsbot saat ini belum diperlukan karena sumber sebelumnya sudah
+# ter-cache. selain itu di production sumber dibawah mengalami error 'unauthenticated'
+#FROM registry.digitalservice.id/proxyjds/library/tiangolo/uvicorn-gunicorn-fastapi:python3.8-slim
+
+FROM tiangolo/uvicorn-gunicorn-fastapi:python3.8-slim
 
 # copy only requirements.txt as it rarely changed. This is done to utilize
 # docker layer caching, thus avoid calling 'pip install' during every build
