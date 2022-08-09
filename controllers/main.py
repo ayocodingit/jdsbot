@@ -55,23 +55,14 @@ Per tanggal 26 November 2021, ada beberapa perubahan:
 def action_listproject(telegram_item):
     """ action for /listproject command """
     # banyak karakter yang perlu di escape agar lolos parsing markdown di telegram. ref: https://core.telegram.org/bots/api#markdownv2-style
-    msg = "List project\-project di aplikasi DigiTeam saat ini:\n"
+    msg = [ "List project\-project di aplikasi DigiTeam saat ini:" ]
 
     key_list = sorted(list(groupware.PROJECT_LIST.keys()))
 
-    for (index, item) in enumerate(key_list):
-        msg += "\- `{}`\n".format(groupware.PROJECT_LIST[item]['originalName'])
+    for item in key_list:
+        msg.append( "\- `{}`".format(groupware.PROJECT_LIST[item]['originalName']))
 
-        # kalau isi list terlalu banyak, potong sesuai konstanta LIST_CUTOFF_NUM
-        if ((index+1) % LIST_CUTOFF_NUM == 0):
-            bot.reply_message(telegram_item, msg, is_markdown=True)
-            msg = ''
-
-    # kalau masih ada yang blm ter-send
-    if len(msg) > 0:
-        bot.reply_message(telegram_item, msg, is_markdown=True)
-
-    return True
+    return bot.reply_message_paginated(telegram_item, msg, is_markdown=True)
 
 def action_reload(telegram_item):
     """ action for /reload_data command """
