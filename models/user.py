@@ -84,6 +84,20 @@ def set_alias(username, new_alias):
     load_user_data()
     return (True, 'success')
 
+def remove_alias(alias):
+    global ALIAS
+
+    query_delete = """
+        DELETE FROM users
+        WHERE alias = :alias"""
+    res = db.execute(
+        query_delete, {
+            'alias':alias,
+        }, once=True)
+
+    load_user_data()
+    return (True, 'success')
+
 def get_user_token(username):
     global ALIAS
     global PASSWORD

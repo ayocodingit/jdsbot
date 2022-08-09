@@ -17,14 +17,13 @@ import controllers.checkin as checkin
 import controllers.checkout as checkout
 import controllers.lapor as lapor
 import controllers.tambah as tambah
-import controllers.setalias as setalias
+import controllers.manage_alias as manage_alias
 import controllers.cekabsensi as cekabsensi
 import controllers.ulangtahun as ulangtahun
 from controllers.help import action_help
 
 processed=[]
 START_TIME = time.time()
-LIST_CUTOFF_NUM = os.getenv('LIST_CUTOFF_NUM', 90)
 
 def setup():
     """ iniate bot_controller """
@@ -126,7 +125,9 @@ def process_telegram_input(item):
         '/about' : action_about,
         '/help' : action_help,
         '/whatsnew' : action_whatsnew,
-        '/setalias' : setalias.action_setalias,
+        '/setalias' : manage_alias.action_setalias,
+        '/listalias' : manage_alias.action_listalias,
+        '/removealias' : manage_alias.action_removealias,
         '/listproject': action_listproject,
         '/reload_data': action_reload,
         '/cekabsensi': cekabsensi.action_cekabsensi,
