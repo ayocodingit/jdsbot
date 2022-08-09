@@ -9,6 +9,8 @@ msg['default'] = """Command\-command yang tersedia:
 \- `/tambah` : Menambahkan user yang mungkin belum tersebut di laporan yang sudah tersubmit dengan command `/lapor`
 \- `/whatsnew` memberikan informasi fitur\-fitur atau perubahan\-perubahanyang baru ditambahkan
 \- `/setalias` : Mengubah alias username telegram untuk salah satu username DigiTeam
+\- `/listalias` : List daftar alias di bot DigiTeam
+\- `/removealias` : Hapus alias di bot DigiTeam
 \- `/listproject` : Menampilkan list semua project yang ada di DigiTeam saat ini
 \- `/cekabsensi` : Menampilkan daftar user yang belum check\-in di groupware hari ini
 \- `/cekabsensi <nama divisi>` : Menampilkan daftar user yang belum checkin sesuai divisi tertentu
@@ -96,6 +98,16 @@ Cara menggunakan command `/setalias`:
 ```
 /setalias <username groupware> | <alias baru>
 ```
+"""
+
+msg['removealias'] = """
+Cara menggunakan command `/removealias`:
+
+```
+/removealias <alias>
+```
+
+NB: perhatikan bahwa input yang digunakan adalah alias, bukan username
 """
 
 msg['listproject'] = """

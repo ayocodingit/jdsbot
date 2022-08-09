@@ -17,14 +17,13 @@ import controllers.checkin as checkin
 import controllers.checkout as checkout
 import controllers.lapor as lapor
 import controllers.tambah as tambah
-import controllers.setalias as setalias
+import controllers.manage_alias as manage_alias
 import controllers.cekabsensi as cekabsensi
 import controllers.ulangtahun as ulangtahun
 from controllers.help import action_help
 
 processed=[]
 START_TIME = time.time()
-LIST_CUTOFF_NUM = os.getenv('LIST_CUTOFF_NUM', 90)
 
 def setup():
     """ iniate bot_controller """
@@ -55,23 +54,14 @@ Per tanggal 26 November 2021, ada beberapa perubahan:
 def action_listproject(telegram_item):
     """ action for /listproject command """
     # banyak karakter yang perlu di escape agar lolos parsing markdown di telegram. ref: https://core.telegram.org/bots/api#markdownv2-style
-    msg = "List project\-project di aplikasi DigiTeam saat ini:\n"
+    msg = [ "List project\-project di aplikasi DigiTeam saat ini:" ]
 
     key_list = sorted(list(groupware.PROJECT_LIST.keys()))
 
-    for (index, item) in enumerate(key_list):
-        msg += "\- `{}`\n".format(groupware.PROJECT_LIST[item]['originalName'])
+    for item in key_list:
+        msg.append( "\- `{}`".format(groupware.PROJECT_LIST[item]['originalName']))
 
-        # kalau isi list terlalu banyak, potong sesuai konstanta LIST_CUTOFF_NUM
-        if ((index+1) % LIST_CUTOFF_NUM == 0):
-            bot.reply_message(telegram_item, msg, is_markdown=True)
-            msg = ''
-
-    # kalau masih ada yang blm ter-send
-    if len(msg) > 0:
-        bot.reply_message(telegram_item, msg, is_markdown=True)
-
-    return True
+    return bot.reply_message_paginated(telegram_item, msg, is_markdown=True)
 
 def action_reload(telegram_item):
     """ action for /reload_data command """
@@ -135,7 +125,9 @@ def process_telegram_input(item):
         '/about' : action_about,
         '/help' : action_help,
         '/whatsnew' : action_whatsnew,
-        '/setalias' : setalias.action_setalias,
+        '/setalias' : manage_alias.action_setalias,
+        '/listalias' : manage_alias.action_listalias,
+        '/removealias' : manage_alias.action_removealias,
         '/listproject': action_listproject,
         '/reload_data': action_reload,
         '/cekabsensi': cekabsensi.action_cekabsensi,

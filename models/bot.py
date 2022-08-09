@@ -26,6 +26,8 @@ EMOJI_FAILED = "❌"
 ROOT_BOT_URL = 'https://api.telegram.org/bot{}'.format(TELEGRAM_TOKEN)
 ROOT_BOT_FILE_URL = 'https://api.telegram.org/file/bot{}'.format(TELEGRAM_TOKEN)
 
+LIST_CUTOFF_NUM = int(os.getenv('LIST_CUTOFF_NUM', 90))
+
 def run_command(path, data=None):
     """ run a single telegram API command """
     global ROOT_BOT_URL
@@ -106,6 +108,19 @@ def reply_message(telegram_item, msg, is_direct_reply=False, is_markdown=False, 
         data = { **data, **custom_data }
 
     return run_command('/sendMessage', data)
+
+"""
+Reply message with list as msg input. Support splitting massage if its too long
+"""
+def reply_message_paginated(telegram_item, msg_list, is_direct_reply=False, is_markdown=False, custom_data=None):
+    # chunk daftar message sesuai nilai LIST_CUTOFF_NUM
+    for index in range(0, len(msg_list), LIST_CUTOFF_NUM) :
+        msg_chunk = msg_list[index:index+LIST_CUTOFF_NUM]
+        final_msg = "\n".join(msg_chunk)
+
+        reply_message(telegram_item, final_msg, is_direct_reply, is_markdown, custom_data)
+
+    return True
 
 def process_report(telegram_item, input_fields, image_data, peserta=None, save_history=True):
     """ process parsing result from our telegram processor"""
