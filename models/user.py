@@ -126,6 +126,8 @@ def get_users_attendance(date=None):
         groupware.get_attendance(auth_token, date)
     ]
 
+    print('attendance_list', attendance_list)
+
     results= []
     for item in groupware.get_users(auth_token, is_active=True, with_struktural=False):
         username = item['username']
