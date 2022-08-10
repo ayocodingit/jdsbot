@@ -9,8 +9,7 @@ import models.user as user
 def action_cekabsensi(telegram_item):
     """ action for /cekabsensi command """
     timezone_jkt = timezone('Asia/Jakarta')
-    # now = datetime.now(timezone_jkt)
-    now = datetime.now()
+    now = datetime.now(timezone_jkt)
     attendance_list = user.get_users_attendance(now.strftime('%Y-%m-%d'))
     print(attendance_list)
     attendance_list_clean = []
