@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date, time
 from pytz import timezone
 from dotenv import load_dotenv
 from pathlib import Path
@@ -11,6 +11,7 @@ load_dotenv(dotenv_path=env_path)
 
 ROOT_API_URL = os.getenv('ROOT_API_URL')
 CHECKIN_URL = ROOT_API_URL+'/attendance/checkin/'
+PREDEFINED_CUSTOM_WAKTU = '07:30:00'
 
 def action_checkin(item, peserta=None):
     """ action for /checkin command """
@@ -24,23 +25,31 @@ def action_checkin(item, peserta=None):
     first_params = lines[0]
     first_params = first_params[first_params.find(' ')+1 :] # start from after first ' '
 
+    current_time = datetime.now(timezone('Asia/Jakarta'))
+
     # default values
     username = '@' + item['message']['from']['username']
     location = first_params.upper()
+    checkin_time = current_time
+    tanggal   = checkin_time.strftime('%Y-%m-%d')
+    waktu = checkin_time.strftime('%H:%M')
 
     # custom values
     first_params = first_params.split('|') # split with '|'
 
-    if len(first_params) == 2 :
+    if len(first_params) >= 2 :
         username = first_params[0].strip()
         location = first_params[1].strip().upper()
 
-    current_time = datetime.now(timezone('Asia/Jakarta'))
-    current_time_utc = current_time.astimezone(timezone('UTC'))
+    if len(first_params) == 3 :
+        tanggal = first_params[2].strip()
 
-    checkinDateTimeFormat = current_time_utc.strftime('%Y-%m-%dT%H:%M:%I.000Z')
-    dateNow   = current_time.strftime('%Y-%m-%d')
-    hourMinuteNow = current_time.strftime('%H:%M')
+        tanggal = date.fromisoformat(tanggal)
+        waktu = time.fromisoformat(PREDEFINED_CUSTOM_WAKTU)
+        checkin_time = datetime.combine(tanggal, waktu, timezone('Asia/Jakarta'))
+
+    checkin_time_utc = checkin_time.astimezone(timezone('UTC'))
+    checkinDateTimeFormat = checkin_time_utc.strftime('%Y-%m-%dT%H:%M:%I.000Z')
 
     locationAvailable = ['WFH','WFO','PERJADIN']
 
@@ -64,7 +73,7 @@ def action_checkin(item, peserta=None):
             data=data
         )
 
-        msg = "%s | HADIR %s Pukul %s %s %s" % (username, dateNow , hourMinuteNow, bot.EMOJI_SUCCESS, location)
+        msg = "%s | HADIR %s Pukul %s %s %s" % (username, tanggal , waktu, bot.EMOJI_SUCCESS, location)
         responseMessage = json.loads(req.text)
 
         if req.status_code >= 300:
