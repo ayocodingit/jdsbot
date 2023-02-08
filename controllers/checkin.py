@@ -34,6 +34,12 @@ def action_checkin(item, peserta=None):
     tanggal   = checkin_time.strftime('%Y-%m-%d')
     waktu = checkin_time.strftime('%H:%M')
 
+    #batas waktu checkin
+    batas_waktu_checkin = "07:30"
+    if waktu > batas_waktu_checkin :
+        msg = "Checkin gagal | waktu melebihi 7:30"
+        return bot.reply_message(item, msg)
+
     # custom values
     first_params = first_params.split('|') # split with '|'
 
