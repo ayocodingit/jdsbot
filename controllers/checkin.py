@@ -37,7 +37,7 @@ def action_checkin(item, peserta=None):
     #batas waktu checkin
     batas_waktu_checkin = "07:30"
     if waktu > batas_waktu_checkin :
-        msg = "Checkin gagal | waktu melebihi 7:30"
+        msg = "Checkin gagal | waktu melebihi 7:30, **silahkan checkin menggunakan https://groupware.digitalservice.id/**"
         return bot.reply_message(item, msg)
 
     # custom values
